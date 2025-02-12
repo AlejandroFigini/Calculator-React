@@ -35,18 +35,19 @@ border-radius: 1vw;
 }
 
 .ct-buttons-number {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
+    
     display: grid;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
     grid-template-columns: 1fr 1fr 1fr;
     gap: .3vw;
 }
 
 .ct-buttons-operator {
     gap: .3vw;
-    grid-column: 2 / 3;
+    grid-column: 1 / 2;
     grid-row: 2 / 3;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 
 }
