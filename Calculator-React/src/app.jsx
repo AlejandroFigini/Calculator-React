@@ -1,49 +1,80 @@
-
 import "./app.css"
 import { Button } from "./button"
 import { Screen } from "./screen"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { evaluate } from "mathjs";
-import { faXmark, faPlus, faDivide, faEquals, faSquareRootVariable, faDeleteLeft, faTrash, fa1, fa2, fa3, fa4, fa5, fa6, fa7, fa8, fa9, fa0, faMinus, faCircle, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
-import { icon } from "@fortawesome/fontawesome-svg-core";
+import { CalculatorMode } from "./calculatorMode"
 
 export function App() {
-
+  /*
+  object button:{
+      icon= button label,
+      operator= operator inside the expression,
+      action= specific button function.
+  }
+  */
   const buttons = {
+    //Buttons without icons
+    e: {
+      operator: 'e',
+    },
+
+    ans: {
+      operator: 'Ans',
+    },
+
+    percentage: {
+      operator: '%',
+    },
+
+    parenthesesClose: {
+      operator: ')',
+    },
+
+    degrees: {
+      operator: 'Deg',
+    },
+
+    radians: {
+      operator: 'Rad',
+    },
+
+    addition: {
+      operator: '+',
+    },
 
     subtraction: {
       operator: '-',
     },
 
     divide: {
-      operator: '/',
-      icon: '÷',
+      operator: '÷',
     },
 
     multiplication: {
-      operator: '*',
-      icon: 'X',
+      operator: 'x',
     },
 
-    addition: {
-      operator: '+',
+    pi: {
+      operator: 'π',
     },
+
+    //Buttons with icons
     squareRoot: {
-      operator: 'sqrt()',
+      operator: '√()',
       icon: '√',
     },
+
     logarithm: {
       operator: 'log()',
       icon: 'log',
     },
-    ln: {
-      operator: 'ln()',
-      icon: 'ln',
-    },
+
     cos: {
       operator: 'cos()',
       icon: 'cos',
     },
+
     sen: {
       operator: 'sen()',
       icon: 'sen',
@@ -53,91 +84,85 @@ export function App() {
       operator: 'tan()',
       icon: 'tan',
     },
-    e: {
-      operator: 'e',
-    },
 
-    percentage: {
-      operator: '%',
-    },
-    pi: {
-      operator: 'pi',
-      icon: 'π',
-    },
     factorial: {
       operator: '!',
       icon: 'x!',
     },
-    ans: {
-      operator: 'Ans',
-    },
+
     exponent: {
       operator: '^()',
       icon: '^',
     },
+
     parenthesesOpen: {
       operator: '()',
       icon: '(',
     },
-    parenthesesClose: {
-      operator: ')',
-    },
-    degrees: {
-      operator: 'Deg',
-    },
-    radians: {
-      operator: 'Rad',
+
+    //buttons with additional functions
+    ans: {
+      operator: 'Ans',
     },
 
     clear: {
-      operator: 'C',
-      acction: function clearScreen() {
-        setExpression('');
-        setResult('');
-        setOpen(0);
-      },
+      icon: 'C',
+      acction: clearScreen,
     },
-
 
     delete: {
-      operator: '←',
-      acction: function deletetCharScreenn() {
-        setExpression((prev) => {
-          const index = prev.indexOf(")");
-
-          // Eliminamos `()` si existen y restamos 1 a `open`
-          if (/\(\)/.test(prev)) {
-            setOpen((prevOpen) => prevOpen - 1);
-            return prev.replace(/\(\)/g, "");
-          }
-
-          // Si hay `)` pero NO `()`, eliminamos un carácter usando `open`
-          if (index !== -1) {
-            const openmalo = -open; // open debería estar definido en el estado
-            return prev.slice(0, openmalo - 1) + prev.slice(openmalo);
-          }
-
-          // Si no hay `)` ni `()`, eliminamos el último carácter
-          return prev.slice(0, -1);
-        });
-      },
+      icon: '←',
+      acction: deletetCharScreen,
     },
+
     equal: {
-      operator: '=',
-      icon: faEquals,
-      acction: function result() {
-        setResult(evaluate(expression).toString());
-      },
-    },
-
+      icon: '=',
+      acction: calculateResult,
+    }
   }
 
-  const [expression, setExpression] = useState('');
+  const [expression, setExpression] = useState('0');
   const [result, setResult] = useState('');
-  const [open, setOpen] = useState(0);
+  const [ans, setAns] = useState(0);
+  const [open, setOpen] = useState(0); //counter open parentheses
+
+  //Button functions
+  function clearScreen() {
+    setExpression('');
+    setResult('');
+    setOpen(0);
+  }
+
+  function deletetCharScreen() {
+    setExpression((prev) => {
+      const index = prev.indexOf(")");
+
+      // Eliminamos `()` si existen y restamos 1 a `open`
+      if (/\(\)/.test(prev)) {
+        setOpen((prevOpen) => prevOpen - 1);
+        return prev.replace(/\(\)/g, "");
+      }
+
+      // Si hay `)` pero NO `()`, eliminamos un carácter usando `open`
+      if (index !== -1) {
+        const openmalo = -open; // open debería estar definido en el estado
+        return prev.slice(0, openmalo - 1) + prev.slice(openmalo);
+      }
+
+      // Si no hay `)` ni `()`, eliminamos el último carácter
+      return prev.slice(0, -1);
+    });
+  }
 
   function updateScreen(value) {
+
     setExpression((prev) => {
+      if (result !== '') {
+        setExpression(result + value); // Usa result para iniciar la nueva expresión
+        setResult(''); // Limpia el resultado después de actualizar la expresión
+        return; // Evita que el código continúe ejecutándose
+      }
+
 
       if (value.includes('()')) {
         setOpen(open + 1)
@@ -152,66 +177,122 @@ export function App() {
 
   }
 
+  function parseEvaluate(value) {
+    return value.replaceAll("x", "*")
+      .replaceAll("÷", "/")
+      .replaceAll("√", "sqrt")
+      .replaceAll("π", "pi")
+      .replaceAll("Ans", ans);
+  }
+
+  function calculateResult() {
+    try {
+      updateScreen('=')
+      setResult(
+        evaluate(parseEvaluate(expression))
+      );
+
+    } catch {
+      setResult('SyntaxError');
+    }
+  }
+
+  useEffect(() => {
+    if (result !== '' && result !== 'SyntaxError') {
+      setAns(result);
+    }
+  }, [result]);
+
+
+
+  const [mode, setMode] = useState('Standar')
+
+  function changeMode(value) {
+    setMode(value);
+  }
+
+
+
+
+
 
   return (
     <>
       <section>
-        <div className="ct-screen">
-          <Screen className="ct-screen-up" text={expression} />
-          <Screen className="ct-screen-down" text={result} />
+     
+        <div className="calculator-screen">
+        <CalculatorMode changeMode={changeMode} mode={mode} />
+          <Screen className="ct-screen-down" expression={expression} result={result} ans={ans} />
         </div>
-        <div className="ct-buttons-number">
-          <Button button={"7"} action={updateScreen} />
-          <Button button={"8"} action={updateScreen} />
-          <Button button={"9"} action={updateScreen} />
-          <Button button={"4"} action={updateScreen} />
-          <Button button={"5"} action={updateScreen} />
-          <Button button={"6"} action={updateScreen} />
-          <Button button={"1"} action={updateScreen} />
-          <Button button={"2"} action={updateScreen} />
-          <Button button={"3"} action={updateScreen} />
-          <Button button={"."} action={updateScreen} />
-          <Button button={"0"} action={updateScreen} />
+        <div className="calculator-buttons">
+
+          <div className={`calculator-buttons-scientific ${mode=="Scientific"?"scientific-mode":""}`}>
+
+
+            <Button icon={buttons.parenthesesOpen.icon} operator={buttons.parenthesesOpen.operator} action={updateScreen} />
+            <Button operator={buttons.parenthesesClose.operator} action={updateScreen} />
+            <Button icon={buttons.squareRoot.icon} operator={buttons.squareRoot.operator} action={updateScreen} />
+            <Button icon={buttons.logarithm.icon} operator={buttons.logarithm.operator} action={updateScreen} />
+            <Button icon={buttons.cos.icon} operator={buttons.cos.operator} action={updateScreen} />
+            <Button icon={buttons.sen.icon} operator={buttons.sen.operator} action={updateScreen} />
+
+
+
+            <Button icon={buttons.tan.icon} operator={buttons.tan.operator} action={updateScreen} />
+            <Button operator={buttons.e.operator} action={updateScreen} />
+            <Button icon={buttons.parenthesesOpen.icon} operator={buttons.parenthesesOpen.operator} action={updateScreen} />
+            <Button operator={buttons.parenthesesClose.operator} action={updateScreen} />
+            <Button icon={buttons.squareRoot.icon} operator={buttons.squareRoot.operator} action={updateScreen} />
+            <Button icon={buttons.logarithm.icon} operator={buttons.logarithm.operator} action={updateScreen} />
+            <Button icon={buttons.cos.icon} operator={buttons.cos.operator} action={updateScreen} />
+            <Button icon={buttons.sen.icon} operator={buttons.sen.operator} action={updateScreen} />
+
+
+
+            <Button icon={buttons.tan.icon} operator={buttons.tan.operator} action={updateScreen} />
+            <Button operator={buttons.e.operator} action={updateScreen} />
+            <Button operator={buttons.pi.operator} action={updateScreen} />
+            <Button operator={buttons.ans.operator} action={updateScreen} />
+            <Button icon={buttons.factorial.icon} operator={buttons.factorial.operator} action={updateScreen} />
+            <Button icon={buttons.exponent.icon} operator={buttons.exponent.operator} action={updateScreen} />
+
+          </div>
+          <div className={`calculator-buttons-basic`} >
+            <Button icon={"7"} operator={"7"} action={updateScreen} />
+            <Button icon={"8"} operator={"8"} action={updateScreen} />
+            <Button icon={"9"} operator={"9"} action={updateScreen} />
+            <Button operator={buttons.addition.operator} action={updateScreen} />
+
+            <Button icon={"4"} operator={"4"} action={updateScreen} />
+
+            <Button icon={"5"} operator={"5"} action={updateScreen} />
+            <Button icon={"6"} operator={"6"} action={updateScreen} />
+            <Button operator={buttons.subtraction.operator} action={updateScreen} />
+
+
+            <Button icon={"1"} operator={"1"} action={updateScreen} />
+            <Button icon={"2"} operator={"2"} action={updateScreen} />
+            <Button icon={"3"} operator={"3"} action={updateScreen} />
+            <Button operator={buttons.multiplication.operator} action={updateScreen} />
+
+            <Button icon={"."} operator={"."} action={updateScreen} />
+
+            <Button icon={"0"} operator={"0"} action={updateScreen} />
+            <Button icon={buttons.equal.icon} action={buttons.equal.acction} />
+            <Button icon={buttons.clear.icon} action={buttons.clear.acction} />
+            <Button icon={buttons.delete.icon} action={buttons.delete.acction} />
+            <Button operator={buttons.percentage.operator} action={updateScreen} />
+            <Button operator={buttons.divide.operator} action={updateScreen} />
+          </div>
+
         </div>
-        <div className="ct-buttons-operator">
 
-          <Button button={buttons.addition.operator} icon={buttons.addition.icon} action={updateScreen} />
-          <Button button={buttons.subtraction.operator} icon={buttons.subtraction.icon} action={updateScreen} />
-          <Button button={buttons.multiplication.operator} icon={buttons.multiplication.icon} action={updateScreen} />
-          <Button button={buttons.divide.operator} icon={buttons.divide.icon} action={updateScreen} />
-
-          <Button button={buttons.parenthesesOpen.operator} icon={buttons.parenthesesOpen.icon} action={updateScreen} />
-          <Button button={buttons.parenthesesClose.operator} icon={buttons.parenthesesClose.icon} action={updateScreen} />
-          <Button button={buttons.squareRoot.operator} icon={buttons.squareRoot.icon} action={updateScreen} />
-          <Button button={buttons.logarithm.operator} icon={buttons.logarithm.icon} action={updateScreen} />
-          <Button button={buttons.cos.operator} icon={buttons.cos.icon} action={updateScreen} />
-          <Button button={buttons.sen.operator} icon={buttons.sen.icon} action={updateScreen} />
-
-
-          <Button button={buttons.tan.operator} icon={buttons.tan.icon} action={updateScreen} />
-          <Button button={buttons.e.operator} action={updateScreen} />
-          <Button button={buttons.percentage.operator} action={updateScreen} />
-          <Button button={buttons.pi.operator} icon={buttons.pi.icon} action={updateScreen} />
-          <Button button={buttons.factorial.operator} icon={buttons.factorial.icon} action={updateScreen} />
-          <Button button={buttons.exponent.operator} icon={buttons.exponent.icon} action={updateScreen} />
-          <Button button={buttons.clear.operator} icon={buttons.clear.icon} action={buttons.clear.acction} />
-          <Button button={buttons.delete.operator} icon={buttons.delete.icon} action={buttons.delete.acction} />
-          <Button button={buttons.equal.operator} action={buttons.equal.acction} />
-        </div>
       </section>
     </>
   )
-
 }
+
+
 /*
 
- 
-
-
-       
-        
-      
-        
- 
-*/
-
+ */

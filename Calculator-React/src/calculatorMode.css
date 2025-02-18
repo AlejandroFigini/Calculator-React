@@ -1,0 +1,89 @@
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+P {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5vw;
+    background-color: #000000;
+}
+ul>li{
+    
+
+   
+    width: 100%;
+}
+li {
+
+  
+    display: flex;
+    padding: .5vw 0vw;
+    justify-content: left;
+    align-items: center;
+
+
+}
+
+.selected {
+    position: relative;
+
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-weight: lighter;
+    color: #ececec;
+
+
+}
+
+.selected>p {
+    font-size: 1vw;
+   font-weight: bolder;
+}
+
+/* Estilos del submenú (oculto por defecto) */
+.submenu {
+    position: absolute;
+    left: 1vw;
+    top: 100%;
+    /* Debajo del elemento seleccionado */
+    width: 100%;
+font-size: .8vw;
+
+
+    transform: scaleY(0);
+    /* Inicialmente colapsado */
+    transform-origin: top;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Aparece cuando se pasa el mouse */
+.show {
+    transform: scaleY(1);
+}
+
+/* Estilo de los ítems del submenú */
+.submenu-item {
+
+    cursor: pointer;
+    color: #999da9;
+    font-weight: lighter;
+
+}
+
+.submenu-item:hover {
+
+    color: #ececec;
+}
+.submenu-item>p:hover{
+    transform: scale(1.03);
+}
+
+.submenu-item>p{
+    transition: .1s all ease-in-out;
+}

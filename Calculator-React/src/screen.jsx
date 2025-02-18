@@ -1,7 +1,29 @@
 import "./screen.css"
-export function Screen({className,text}){
+import { CalculatorMode } from "./calculatorMode"
+export function Screen({expression,result,ans}){
+
+let displayUp=result;
+let displayDown=expression;
+
+if (result==='') {
+  displayUp='Ans= ' + ans;
+ displayDown=expression;
+} else if (result!='') {
+  displayUp=expression;
+ displayDown=result;
+}
+ 
     return(
-        <h2 className={className}>{text}</h2>
+      
+      <>
+      
+      <h2>
+          <span> {displayUp} <br/></span>
+      <span> {displayDown}</span>
+      
+        </h2> 
+      </>
+        
     )
 
 

@@ -1,11 +1,9 @@
 import "./button.css"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
-export function Button({ button, action, icon }) {
+export function Button({icon,operator,action }) {
     return (
-        <button className={`btn-${button}`} onClick={() => (action(button))}>
-            {icon ? icon : button}
-        </button>
+      <button className={`btn-${icon ? icon : operator}`} onClick={() => action(operator)}> 
+        {icon ? icon : operator}
+      </button>
     )
 }
