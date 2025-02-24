@@ -1,15 +1,10 @@
 import "./css/app.css"
 import { useState, useEffect } from "react";
-<<<<<<< Updated upstream
-import { evaluate } from "mathjs";
-import { CalculatorMode } from "./calculatorMode"
-=======
 import { evaluate, OperatorNode } from "mathjs";
 //Components
 import { Screen } from "./components/screen";
 import { CalculatorBasic } from "./components/calculatorBasic";
 import { CalculatorScientific } from "./components/calculatorScientific";
->>>>>>> Stashed changes
 
 export function App() {
   /*
@@ -71,7 +66,11 @@ export function App() {
       icon: '√',
     },
 
-    logarithm: {
+    logarithm10: {
+      operator: 'log()',
+      icon: 'log',
+    },
+    logarithmE: {
       operator: 'log()',
       icon: 'log',
     },
@@ -108,24 +107,6 @@ export function App() {
 
     //buttons with additional functions
     clear: {
-<<<<<<< Updated upstream
-      icon: 'C',
-      acction: clearScreen,
-    },
-
-    delete: {
-      icon: '←',
-      acction: deletetCharScreen,
-    },
-
-    equal: {
-      icon: '=',
-      acction: calculateResult,
-    }
-  }
-
-  const [expression, setExpression] = useState('0');
-=======
       operator: 'C',
       action: clearScreen,
     },
@@ -143,7 +124,6 @@ export function App() {
 
   const [mode, setMode] = useState('Standar')
   const [expression, setExpression] = useState('');
->>>>>>> Stashed changes
   const [result, setResult] = useState('');
   const [ans, setAns] = useState(0);
   const [open, setOpen] = useState(0); //counter open parentheses
@@ -265,90 +245,6 @@ export function App() {
     }
   }, [result]);
 
-<<<<<<< Updated upstream
-
-
-  const [mode, setMode] = useState('Standar')
-
-  function changeMode(value) {
-    setMode(value);
-  }
-
-
-
-
-
-
-  return (
-    <>
-      <section>
-     
-        <div className="calculator-screen">
-        <CalculatorMode changeMode={changeMode} mode={mode} />
-          <Screen className="ct-screen-down" expression={expression} result={result} ans={ans} />
-        </div>
-        <div className="calculator-buttons">
-
-          <div className={`calculator-buttons-scientific ${mode=="Scientific"?"scientific-mode":""}`}>
-
-
-            <Button icon={buttons.parenthesesOpen.icon} operator={buttons.parenthesesOpen.operator} action={updateScreen} />
-            <Button operator={buttons.parenthesesClose.operator} action={updateScreen} />
-            <Button icon={buttons.squareRoot.icon} operator={buttons.squareRoot.operator} action={updateScreen} />
-            <Button icon={buttons.logarithm.icon} operator={buttons.logarithm.operator} action={updateScreen} />
-            <Button icon={buttons.cos.icon} operator={buttons.cos.operator} action={updateScreen} />
-            <Button icon={buttons.sen.icon} operator={buttons.sen.operator} action={updateScreen} />
-
-
-
-            <Button icon={buttons.tan.icon} operator={buttons.tan.operator} action={updateScreen} />
-            <Button operator={buttons.e.operator} action={updateScreen} />
-            <Button icon={buttons.parenthesesOpen.icon} operator={buttons.parenthesesOpen.operator} action={updateScreen} />
-            <Button operator={buttons.parenthesesClose.operator} action={updateScreen} />
-            <Button icon={buttons.squareRoot.icon} operator={buttons.squareRoot.operator} action={updateScreen} />
-            <Button icon={buttons.logarithm.icon} operator={buttons.logarithm.operator} action={updateScreen} />
-            <Button icon={buttons.cos.icon} operator={buttons.cos.operator} action={updateScreen} />
-            <Button icon={buttons.sen.icon} operator={buttons.sen.operator} action={updateScreen} />
-
-
-
-            <Button icon={buttons.tan.icon} operator={buttons.tan.operator} action={updateScreen} />
-            <Button operator={buttons.e.operator} action={updateScreen} />
-            <Button operator={buttons.pi.operator} action={updateScreen} />
-            <Button operator={buttons.ans.operator} action={updateScreen} />
-            <Button icon={buttons.factorial.icon} operator={buttons.factorial.operator} action={updateScreen} />
-            <Button icon={buttons.exponent.icon} operator={buttons.exponent.operator} action={updateScreen} />
-
-          </div>
-          <div className={`calculator-buttons-basic`} >
-            <Button icon={"7"} operator={"7"} action={updateScreen} />
-            <Button icon={"8"} operator={"8"} action={updateScreen} />
-            <Button icon={"9"} operator={"9"} action={updateScreen} />
-            <Button operator={buttons.addition.operator} action={updateScreen} />
-
-            <Button icon={"4"} operator={"4"} action={updateScreen} />
-
-            <Button icon={"5"} operator={"5"} action={updateScreen} />
-            <Button icon={"6"} operator={"6"} action={updateScreen} />
-            <Button operator={buttons.subtraction.operator} action={updateScreen} />
-
-
-            <Button icon={"1"} operator={"1"} action={updateScreen} />
-            <Button icon={"2"} operator={"2"} action={updateScreen} />
-            <Button icon={"3"} operator={"3"} action={updateScreen} />
-            <Button operator={buttons.multiplication.operator} action={updateScreen} />
-
-            <Button icon={"."} operator={"."} action={updateScreen} />
-
-            <Button icon={"0"} operator={"0"} action={updateScreen} />
-            <Button icon={buttons.equal.icon} action={buttons.equal.acction} />
-            <Button icon={buttons.clear.icon} action={buttons.clear.acction} />
-            <Button icon={buttons.delete.icon} action={buttons.delete.acction} />
-            <Button operator={buttons.percentage.operator} action={updateScreen} />
-            <Button operator={buttons.divide.operator} action={updateScreen} />
-          </div>
-
-=======
   return (
     <>
       <section>
@@ -356,7 +252,6 @@ export function App() {
         <div className="buttons-container">
           <CalculatorBasic buttons={buttons} updateScreen={updateScreen} />
           <CalculatorScientific buttons={buttons} updateScreen={updateScreen} mode={mode} />
->>>>>>> Stashed changes
         </div>
 
       </section>
@@ -365,11 +260,5 @@ export function App() {
 }
 
 
-<<<<<<< Updated upstream
-/*
-
- */
-=======
 /*        
 */
->>>>>>> Stashed changes

@@ -14,7 +14,7 @@ export function CalculatorScientific({ buttons, updateScreen, mode }) {
       <Button icon={buttons.logarithmE.icon} operator={buttons.logarithmE.operator} action={updateScreen} />
       <Button icon={buttons.logarithm10.icon} operator={buttons.logarithm10.operator} action={updateScreen} />
       <Button icon={buttons.cos.icon} operator={buttons.cos.operator} action={updateScreen} />
-      <Button icon={buttons.sin.icon} operator={buttons.sin.operator} action={updateScreen} />
+      <Button icon={buttons.sen.icon} operator={buttons.sen.operator} action={updateScreen} />
       <Button icon={buttons.tan.icon} operator={buttons.tan.operator} action={updateScreen} />
       <Button icon={buttons.factorial.icon} operator={buttons.factorial.operator} action={updateScreen} />
       <Button icon={buttons.exponent.icon} operator={buttons.exponent.operator} action={updateScreen} />
