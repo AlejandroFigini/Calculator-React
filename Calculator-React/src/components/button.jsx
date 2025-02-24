@@ -1,4 +1,5 @@
-import "./button.css"
+import "../css/button.css"
+
 
 export function Button({icon,operator,action }) {
     return (

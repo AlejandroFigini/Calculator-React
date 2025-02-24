@@ -1,0 +1,10 @@
+FontAwesomeIcon{
+    color: aliceblue;
+}
+
+.historical-container{
+    font-size: 1vw;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}

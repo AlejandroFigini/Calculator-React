@@ -1,9 +1,15 @@
-import "./app.css"
-import { Button } from "./button"
-import { Screen } from "./screen"
+import "./css/app.css"
 import { useState, useEffect } from "react";
+<<<<<<< Updated upstream
 import { evaluate } from "mathjs";
 import { CalculatorMode } from "./calculatorMode"
+=======
+import { evaluate, OperatorNode } from "mathjs";
+//Components
+import { Screen } from "./components/screen";
+import { CalculatorBasic } from "./components/calculatorBasic";
+import { CalculatorScientific } from "./components/calculatorScientific";
+>>>>>>> Stashed changes
 
 export function App() {
   /*
@@ -101,11 +107,8 @@ export function App() {
     },
 
     //buttons with additional functions
-    ans: {
-      operator: 'Ans',
-    },
-
     clear: {
+<<<<<<< Updated upstream
       icon: 'C',
       acction: clearScreen,
     },
@@ -122,6 +125,25 @@ export function App() {
   }
 
   const [expression, setExpression] = useState('0');
+=======
+      operator: 'C',
+      action: clearScreen,
+    },
+
+    delete: {
+      operator: '←',
+      action: deleteCharScreen,
+    },
+
+    equal: {
+      operator: '=',
+      action: calculateResult,
+    }
+  }
+
+  const [mode, setMode] = useState('Standar')
+  const [expression, setExpression] = useState('');
+>>>>>>> Stashed changes
   const [result, setResult] = useState('');
   const [ans, setAns] = useState(0);
   const [open, setOpen] = useState(0); //counter open parentheses
@@ -133,26 +155,62 @@ export function App() {
     setOpen(0);
   }
 
-  function deletetCharScreen() {
+  //deletes last character on the screen
+  function deleteCharScreen() {
     setExpression((prev) => {
-      const index = prev.indexOf(")");
-
-      // Eliminamos `()` si existen y restamos 1 a `open`
-      if (/\(\)/.test(prev)) {
+      if (/\(\)/.test(prev)) {  
         setOpen((prevOpen) => prevOpen - 1);
-        return prev.replace(/\(\)/g, "");
+        return prev.replace(/\(\)/g, ""); 
+      } 
+  
+      if (prev[prev.length - 1] === ')') { 
+        const match = prev.match(/(\)+)$/);
+        const trailingCount = match ? match[0].length : 0;
+  
+        if (trailingCount > 1) {
+          setOpen((prevOpen) => prevOpen + 1);
+        } else {
+          setOpen((prevOpen) => Math.max(0, prevOpen - 1));
+        }
+  
+        return prev.slice(0, -2) + prev.slice(-1);
       }
-
-      // Si hay `)` pero NO `()`, eliminamos un carácter usando `open`
-      if (index !== -1) {
-        const openmalo = -open; // open debería estar definido en el estado
-        return prev.slice(0, openmalo - 1) + prev.slice(openmalo);
-      }
-
-      // Si no hay `)` ni `()`, eliminamos el último carácter
+  
       return prev.slice(0, -1);
     });
   }
+  /*
+  function deleteCharScreen() {
+  setExpression((prev) => {
+    // Caso 1: Si hay paréntesis vacíos "()", se eliminan y se actualiza el contador open.
+    if (/\(\)/.test(prev)) {  
+      setOpen((prevOpen) => prevOpen - 1);
+      return prev.replace(/\(\)/g, "");
+    } 
+
+    // Caso 2: Si el último carácter es ')'
+    if (prev[prev.length - 1] === ')') {
+      // Usamos una expresión regular para contar cuántos ')' consecutivos hay al final.
+      const match = prev.match(/(\)+)$/);
+      const trailingCount = match ? match[0].length : 0;
+      
+      // Nos aseguramos de que haya al menos un carácter antes del bloque de ')'
+      if (prev.length > trailingCount) {
+        // Retornamos la cadena sin el carácter que precede inmediatamente al bloque final de ')'
+        return prev.slice(0, prev.length - trailingCount - 1) + prev.slice(prev.length - trailingCount);
+      } else {
+        return prev; // En caso de que no haya nada antes, se retorna la cadena sin cambios.
+      }
+    }
+    
+    // Caso 3: Si no se cumple ningún caso anterior, se elimina el último carácter
+    return prev.slice(0, -1);
+  });
+}
+
+  
+  
+  */
 
   function updateScreen(value) {
 
@@ -197,12 +255,17 @@ export function App() {
     }
   }
 
+  function changeMode(value) {
+    setMode(value);
+  }
+
   useEffect(() => {
     if (result !== '' && result !== 'SyntaxError') {
       setAns(result);
     }
   }, [result]);
 
+<<<<<<< Updated upstream
 
 
   const [mode, setMode] = useState('Standar')
@@ -285,6 +348,15 @@ export function App() {
             <Button operator={buttons.divide.operator} action={updateScreen} />
           </div>
 
+=======
+  return (
+    <>
+      <section>
+        <Screen expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} />
+        <div className="buttons-container">
+          <CalculatorBasic buttons={buttons} updateScreen={updateScreen} />
+          <CalculatorScientific buttons={buttons} updateScreen={updateScreen} mode={mode} />
+>>>>>>> Stashed changes
         </div>
 
       </section>
@@ -293,6 +365,11 @@ export function App() {
 }
 
 
+<<<<<<< Updated upstream
 /*
 
  */
+=======
+/*        
+*/
+>>>>>>> Stashed changes

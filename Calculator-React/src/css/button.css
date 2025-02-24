@@ -18,7 +18,7 @@ button {
     border: var(--border);
     border-radius: .4vw;
     font-size: 1vw;
-    padding: 1.2vw;
+    padding: 1vw;
     cursor: pointer;
 }
 

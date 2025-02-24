@@ -1,0 +1,46 @@
+:root {
+    --bodyColor: linear-gradient(to right, #FF8235, #30E8BF);
+    --calculatorColor: rgba(245, 235, 235, 0.171);
+}
+
+body {
+    background: var(--bodyColor);
+}
+
+section {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: .7vw;
+    padding: 1.6vw;
+    box-shadow: -5px 3px 13px -6px rgba(0, 0, 0, 0.58);
+    background: var(--calculatorColor);
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.buttons-Basic,
+.buttons-Scientific {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.3vw;
+}
+
+.buttons-Scientific {
+    grid-template-columns: repeat(3, 1fr);
+    width: 0;
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+}
+
+.scientific-mode {
+    width: 12vw;
+    opacity: 1;
+    margin-left: 1vw;
+}
