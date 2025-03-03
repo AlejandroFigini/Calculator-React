@@ -23,15 +23,19 @@ h2 {
     height: 6.5vw;
     font-family: Arial, sans-serif;
     font-weight: lighter;
-    font-size: 1.5vw;
     color: #ececec;
    text-align: start;
     display: flex;
 justify-content: center;
 flex-direction: column;
+transition: none;
+
 }
 
-h2 span:first-child {
-    color: #999da9;
-    font-size: 1vw;
+
+.noview{
+    display: none;
+}
+.siview{
+    display: block;
 }
