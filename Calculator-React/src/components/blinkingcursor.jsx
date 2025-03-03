@@ -6,10 +6,13 @@ export function BlinkingCurson() {
 
     return (
         <motion.span
-            animate={{ opacity: [1, 0, 1] }}
+        className={`prueba ${reuslt != '' ? "noview" : "siview"}`}
+            animate={{ 
+                opacity: [1, 0, 1] ,
+            }}
             transition={{ duration: 1, repeat: Infinity }}
         >
-            __
+        _
         </motion.span>
     )
 }
