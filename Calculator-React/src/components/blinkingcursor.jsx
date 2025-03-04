@@ -1,18 +1,12 @@
 import { motion } from "framer-motion";
 
-export function BlinkingCurson() {
-
-
-
+export function BlinkingCurson({ result }) {
     return (
         <motion.span
-        className={`prueba ${reuslt != '' ? "noview" : "siview"}`}
-            animate={{ 
-                opacity: [1, 0, 1] ,
-            }}
-            transition={{ duration: 1, repeat: Infinity }}
+            animate={result === 0 ? { display: "inline-block", opacity: [1, 0, 1] } : { display: "none" }}
+            transition={{ opacity: { duration: 1, repeat: Infinity } }}
         >
-        _
+            _
         </motion.span>
-    )
+    );
 }

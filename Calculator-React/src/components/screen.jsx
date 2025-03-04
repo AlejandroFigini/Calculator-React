@@ -7,29 +7,29 @@ import { BlinkingCurson } from "../components/blinkingcursor";
 
 export function Screen({ expression, result, ans, changeMode, mode }) {
 
-  let displayUp = result === '' ? 'ans= ' + ans : result;
+  let displayUp = result === 0 ? 'ans= ' + ans : result;
   let displayDown = expression;
 
   const animations = {
     initialUp: {
       transform: "translateY(0%)",
       color: "#999da9",
-      fontSize: '1vw',  // Tamaño inicial pequeño
+      fontSize: '1vw',  
     },
     initialDown: {
       transform: "translateY(0%)",
       color: "#ececec",
-      fontSize: '1.5vw', // Tamaño inicial más grande
+      fontSize: '1.5vw', 
     },
     moveUp: {
       transform: "translateY(-100%)",
       color: "#999da9",
-      fontSize: '1vw',  // Tamaño final
+      fontSize: '1vw',  
     },
     moveDown: {
       transform: "translateY(100%)",
       color: "#ececec",
-      fontSize: '1.5vw', // Tamaño final
+      fontSize: '1.5vw', 
     },
   };
 
@@ -38,26 +38,22 @@ export function Screen({ expression, result, ans, changeMode, mode }) {
       <CalculatorMode changeMode={changeMode} mode={mode} />
       <History />
       <h2>
-        {/* Aquí usas "variants" directamente en el motion.span */}
         <motion.span
           variants={animations}
           initial="initialUp"
-          animate={result != '' ? 'moveDown' :'initialUp' }
-          transition={{ duration: 0.3, ease: "easeOut" }} // Transición más suave
+          animate={result !== 0 ? 'moveDown' :'initialUp' }
+          transition={{ duration: 0.3, ease: "easeOut" }} 
         >
           {displayUp}
         </motion.span>
-
-        {/* Aquí también se usa "variants" y animación basada en el resultado */}
         <motion.span
           variants={animations}
           initial="initialDown"
-          animate={result != '' ? 'moveUp' : 'initialDown'}
-          transition={{ duration: 0.3, ease: "easeOut" }} // Transición más suave
+          animate={result !== 0 ? 'moveUp' : 'initialDown'}
+          transition={{ duration: 0.3, ease: "easeOut" }} 
         >
           {displayDown}
-          <BlinkingCurson />
-
+          <BlinkingCurson result={result} />
         </motion.span>
       </h2>
     </div>
