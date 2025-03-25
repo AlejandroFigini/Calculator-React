@@ -101,7 +101,7 @@ export function App() {
       action: calculateResult,
     }
   }
-  
+
   //Button functions
   function clearScreen() {
     setExpression('');
@@ -140,8 +140,8 @@ export function App() {
         setResult(0);
         return;
       }
-      if(value.includes('=')){
-return (prev+value)
+      if (value.includes('=')) {
+        return (prev + value)
       }
       if (value.includes('()')) {
         setOpen(open + 1)
