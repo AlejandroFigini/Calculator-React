@@ -13,6 +13,8 @@ export function App() {
   const [ans, setAns] = useState(0);
   const [open, setOpen] = useState(0); //counter open parentheses
   const [mode, setMode] = useState('Standar');
+  const [history, setHistory] = useState([]);
+
   const buttons = {
     //Buttons without icons
     e: {
@@ -166,10 +168,11 @@ export function App() {
 
   function calculateResult() {
     try {
-      updateScreen('=');
+      updateScreen('=');     
       setResult(
         evaluate(parseEvaluate(expression))
       );
+      setHistory([...history,expression]);
     } catch {
       setResult('Syntax Error');
     }
@@ -188,7 +191,7 @@ export function App() {
   return (
     <>
       <section>
-        <Screen expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} />
+        <Screen  updateScreen={updateScreen} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} />
         <div className="buttons-container">
           <CalculatorBasic buttons={buttons} updateScreen={updateScreen} />
           <CalculatorScientific buttons={buttons} updateScreen={updateScreen} mode={mode} />

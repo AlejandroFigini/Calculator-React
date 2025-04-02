@@ -1,14 +1,28 @@
 import "../css/history.css"
 
 
-
+import { useState } from "react";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export function History() {
+export function History({history,updateScreen}) {
+
+    const [Open, setOpen] = useState(false);
+
+
     return (
+        <>
         <div className={'historical-container'}>
-            <FontAwesomeIcon  className={'historical-icon'} icon={faClockRotateLeft} style={{ color: "white" }}/>
+            <FontAwesomeIcon  onClick={() => setOpen(!Open)} className={'historical-icon'} icon={faClockRotateLeft} style={{ color: "white" }}/>
+            <div className={`elements ${Open ? 'open' : ''}`}>
+          
+                {history.map((entry, index) => (
+                    <h3 key={index} onClick={() => updateScreen(entry)}>{entry}</h3>
+                ))}
+            
+            </div>
         </div>
+       
+        </>        
     );
 }
