@@ -7,7 +7,6 @@ import "../css/calculatorMode.css";
 
 
 export function CalculatorMode({ changeMode, mode }) {
-console.log({mode})
     const [showMenu, setShowMenu] = useState(false);
     return (
         <div className={`container`}>

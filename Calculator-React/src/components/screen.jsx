@@ -5,13 +5,10 @@ import { History } from "../components/history";
 import { CalculatorMode } from "../components/calculatorMode";
 import { BlinkingCurson } from "../components/blinkingcursor";
 
-export function Screen({ expression, result, ans, changeMode, mode,history,updateScreen }) {
+export function Screen({ expression, result, ans, changeMode, mode,history,updateScreenFromHistory }) {
 
   let displayUp = result === 0 ? 'ans= ' + ans : result;
   let displayDown = expression;
-
-
-
 
   const animations = {
     initialUp: {
@@ -39,7 +36,7 @@ export function Screen({ expression, result, ans, changeMode, mode,history,updat
   return (
     <div className="calculator-screen">
       <CalculatorMode changeMode={changeMode} mode={mode} />
-      <History updateScreen={updateScreen}  history={history} expression={expression} result={result} ans={ans}/>
+      <History updateScreenFromHistory={updateScreenFromHistory}  history={history} />
       <h2>
         <motion.span
           variants={animations}

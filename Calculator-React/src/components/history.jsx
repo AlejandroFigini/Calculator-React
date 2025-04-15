@@ -5,9 +5,10 @@ import { useState } from "react";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export function History({history,updateScreen}) {
+export function History({history,updateScreenFromHistory}) {
 
     const [Open, setOpen] = useState(false);
+
 
 
     return (
@@ -17,12 +18,15 @@ export function History({history,updateScreen}) {
             <div className={`elements ${Open ? 'open' : ''}`}>
           
                 {history.map((entry, index) => (
-                    <h3 key={index} onClick={() => updateScreen(entry)}>{entry}</h3>
-                ))}
-            
+                    <h3 key={index} onClick={ 
+                    function(){
+                        updateScreenFromHistory(entry);
+                      }
+                       
+                    }>{entry}</h3>
+                ))}           
             </div>
-        </div>
-       
+        </div>      
         </>        
     );
 }
