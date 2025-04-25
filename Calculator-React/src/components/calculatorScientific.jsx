@@ -8,8 +8,8 @@ export function CalculatorScientific({ buttons, updateScreen, mode }) {
       <Button operator={buttons.e.operator} action={updateScreen} />
       <Button operator={buttons.pi.operator} action={updateScreen} />
       <Button operator={buttons.ans.operator} action={updateScreen} />
-      <Button operator={buttons.parenthesesClose.operator} action={updateScreen} />
-      <Button icon={buttons.parenthesesOpen.icon} operator={buttons.parenthesesOpen.operator} action={updateScreen} />
+      <Button operator={buttons.parenthesesClose.operator} action={buttons.parenthesesClose.action} />
+      <Button icon={buttons.parenthesesOpen.icon} operator={buttons.parenthesesOpen.operator} action={(op)=>{buttons.parenthesesOpen.action();updateScreen(op)}} />
       <Button icon={buttons.squareRoot.icon} operator={buttons.squareRoot.operator} action={updateScreen} />
       <Button icon={buttons.logarithmE.icon} operator={buttons.logarithmE.operator} action={updateScreen} />
       <Button icon={buttons.logarithm10.icon} operator={buttons.logarithm10.operator} action={updateScreen} />

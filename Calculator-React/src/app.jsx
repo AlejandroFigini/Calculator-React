@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { evaluate } from "mathjs";
+import { acos, evaluate } from "mathjs";
 import "./css/app.css"
 //Components
 import { Screen } from "./components/screen";
@@ -14,7 +14,7 @@ export function App() {
   const [open, setOpen] = useState(0); //counter open parentheses
   const [mode, setMode] = useState('Standar');
   const [history, setHistory] = useState([]);
-  
+
   const buttons = {
     //Buttons without icons
     e: {
@@ -25,9 +25,6 @@ export function App() {
     },
     percentage: {
       operator: '%',
-    },
-    parenthesesClose: {
-      operator: ')',
     },
     degrees: {
       operator: 'Deg',
@@ -84,12 +81,16 @@ export function App() {
       operator: '^()',
       icon: '^',
     },
+    //buttons with additional functions
     parenthesesOpen: {
       operator: '()',
       icon: '(',
+      action: IncreaseParentheses ,
     },
-
-    //buttons with additional functions
+    parenthesesClose: {
+      operator: ')',
+      action: DecreaseParentheses,
+    },
     clear: {
       operator: 'C',
       action: clearScreen,
@@ -113,20 +114,29 @@ export function App() {
 
   function deleteCharScreen() {
     setExpression((prev) => {
+
       if (/\(\)/.test(prev)) {
         setOpen((prevOpen) => prevOpen - 1);
         return prev.replace(/\(\)/g, "");
       }
 
+
+
+
       if (prev[prev.length - 1] === ')') {
         const match = prev.match(/(\)+)$/);
-        const trailingCount = match ? match[0].length : 0;
+        const count = match ? match[0].length : 0;
 
-        if (trailingCount > 1) {
+        if (count > 1) {
           setOpen((prevOpen) => prevOpen + 1);
-        } else {
+        }
+        else {
           setOpen((prevOpen) => Math.max(0, prevOpen - 1));
         }
+
+        setOpen((prevOpen) => count > 1 ? prevOpen + 1 : Math.max(0, prevOpen - 1));
+
+
 
         return prev.slice(0, -2) + prev.slice(-1);
       }
@@ -139,27 +149,37 @@ export function App() {
     clearScreen();
     setExpression(value);
   }
+function IncreaseParentheses() {
+  setOpen(prev => prev + 1);
+}
+
+function DecreaseParentheses() {
+  setOpen(prev => Math.max(0, prev - 1)); 
+}
+
+
+
+
 
   function updateScreen(value) {
     setExpression((prev) => {
-      if (result !== 0) {
-        setExpression(result + value);
-        setResult(0);
-        return;
+      switch (true) {
+        case result !== 0: //Start a new operation keeping the last result
+          setResult(0);
+          return ans + value;
+  
+        case value === ')': //Only update the parentheses counter
+          return prev;
+  
+        case open > 0: //Determine the position of the entry based on the parentheses
+          return prev.slice(0, -open) + value + prev.slice(-open);
+  
+        default: 
+          return prev + value;
       }
-      if (value.includes('=')) {
-        return (prev + value)
-      }
-      if (value.includes('()')) {
-        setOpen(open + 1)
-      }
-      else if (value == ')') {
-        setOpen(prev => Math.max(0, prev - 1))
-        return prev
-      }
-      return open > 0 ? (prev.slice(0, -open) + value + prev.slice(-open)) : (prev + value);
-    })
+    });
   }
+
 
   function parseEvaluate(value) {
     return value.replaceAll("x", "*")
@@ -204,4 +224,5 @@ export function App() {
       </section>
     </>
   )
+
 }
