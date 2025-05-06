@@ -14,7 +14,6 @@ export function App() {
   const [open, setOpen] = useState(0); //counter open parentheses
   const [mode, setMode] = useState('Standar');
   const [history, setHistory] = useState([]);
-
   const buttons = {
     //Buttons without icons
     e: {
@@ -85,7 +84,7 @@ export function App() {
     parenthesesOpen: {
       operator: '()',
       icon: '(',
-      action: IncreaseParentheses ,
+      action: IncreaseParentheses,
     },
     parenthesesClose: {
       operator: ')',
@@ -110,6 +109,33 @@ export function App() {
     setExpression('');
     setResult(0);
     setOpen(0);
+  }
+
+  function IncreaseParentheses() {
+    setOpen(prev => prev + 1);
+  }
+
+  function DecreaseParentheses() {
+    setOpen(prev => Math.max(0, prev - 1));
+  }
+
+  function updateScreen(value) {
+    setExpression((prev) => {
+      switch (true) {
+        case result !== 0: //Start a new operation keeping the last result
+          setResult(0);
+          return ans + value;
+
+        case value === ')': //Only update the parentheses counter
+          return prev;
+
+        case open > 0: //Determine the position of the entry based on the parentheses
+          return prev.slice(0, -open) + value + prev.slice(-open);
+
+        default:
+          return prev + value;
+      }
+    });
   }
 
   function deleteCharScreen() {
@@ -145,42 +171,6 @@ export function App() {
     });
   }
 
-  function updateScreenFromHistory(value) {
-    clearScreen();
-    setExpression(value);
-  }
-function IncreaseParentheses() {
-  setOpen(prev => prev + 1);
-}
-
-function DecreaseParentheses() {
-  setOpen(prev => Math.max(0, prev - 1)); 
-}
-
-
-
-
-
-  function updateScreen(value) {
-    setExpression((prev) => {
-      switch (true) {
-        case result !== 0: //Start a new operation keeping the last result
-          setResult(0);
-          return ans + value;
-  
-        case value === ')': //Only update the parentheses counter
-          return prev;
-  
-        case open > 0: //Determine the position of the entry based on the parentheses
-          return prev.slice(0, -open) + value + prev.slice(-open);
-  
-        default: 
-          return prev + value;
-      }
-    });
-  }
-
-
   function parseEvaluate(value) {
     return value.replaceAll("x", "*")
       .replaceAll("÷", "/")
@@ -201,6 +191,11 @@ function DecreaseParentheses() {
     } catch {
       setResult('Syntax Error');
     }
+  }
+
+  function updateScreenFromHistory(value) {
+    clearScreen();
+    setExpression(value);
   }
 
   function changeMode(value) {
@@ -224,5 +219,4 @@ function DecreaseParentheses() {
       </section>
     </>
   )
-
 }
