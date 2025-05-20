@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { acos, evaluate } from "mathjs";
-import "./css/app.css"
+import { evaluate } from "mathjs";
+import "./css/app.css";
+
 //Components
 import { Screen } from "./components/screen";
 import { CalculatorBasic } from "./components/calculatorBasic";
@@ -122,14 +123,28 @@ export function App() {
   function updateScreen(value) {
     setExpression((prev) => {
       switch (true) {
+        case value === "=": //always show = in the end of the expression
+          setOpen(0);
+          return prev + value;  
+
         case result !== 0: //Start a new operation keeping the last result
           setResult(0);
+          setOpen(0);
           return ans + value;
 
         case value === ')': //Only update the parentheses counter
           return prev;
+        
+        case value.includes("()"): 
+  setOpen(prev => prev + 1);  
 
-        case open > 0: //Determine the position of the entry based on the parentheses
+  const closing = prev.match(/(\)+)$/); // paréntesis al final
+  const index = closing ? prev.length - closing[0].length : prev.length;
+
+  return prev.slice(0, index) + value + prev.slice(index);
+
+      
+        case open > 0: //Determine the position of the input based on the parentheses
           return prev.slice(0, -open) + value + prev.slice(-open);
 
         default:
@@ -140,38 +155,25 @@ export function App() {
 
   function deleteCharScreen() {
     setExpression((prev) => {
-
-      if (/\(\)/.test(prev)) {
+      // Case 1: delete empty parentheses  
+      if (prev.includes("()")) {
         setOpen((prevOpen) => prevOpen - 1);
         return prev.replace(/\(\)/g, "");
       }
 
-
-
-
-      if (prev[prev.length - 1] === ')') {
-        const match = prev.match(/(\)+)$/);
-        const count = match ? match[0].length : 0;
-
-        if (count > 1) {
-          setOpen((prevOpen) => prevOpen + 1);
-        }
-        else {
-          setOpen((prevOpen) => Math.max(0, prevOpen - 1));
-        }
-
-        setOpen((prevOpen) => count > 1 ? prevOpen + 1 : Math.max(0, prevOpen - 1));
-
-
-
-        return prev.slice(0, -2) + prev.slice(-1);
+      // Case 2: delete character keeping parentheses 
+      const match = prev.match(/(\)+)$/);
+      if (match) {
+        const count = match[0].length;
+        return prev.slice(0, -count - 1) + prev.slice(-count);
       }
 
+      // Case 3: normal delete
       return prev.slice(0, -1);
     });
   }
 
-  function parseEvaluate(value) {
+  function parseExpression(value) {
     return value.replaceAll("x", "*")
       .replaceAll("÷", "/")
       .replaceAll("√", "sqrt")
@@ -183,11 +185,11 @@ export function App() {
 
   function calculateResult() {
     try {
-      updateScreen('=');
-      setResult(
-        evaluate(parseEvaluate(expression))
-      );
-      setHistory([...history, expression]);
+      const result = evaluate(parseExpression(expression));
+
+      setResult(result);
+      setHistory(prev => [...prev, expression]); // add expression to history
+      updateScreen("=");
     } catch {
       setResult('Syntax Error');
     }
@@ -202,8 +204,9 @@ export function App() {
     setMode(value);
   }
 
+  // update ans value if the result is correct
   useEffect(() => {
-    if (result !== 0 && result !== 'SyntaxError') {
+    if (![0, 'Syntax Error'].includes(result)) {
       setAns(result);
     }
   }, [result]);
