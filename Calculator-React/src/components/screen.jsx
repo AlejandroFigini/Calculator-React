@@ -1,14 +1,14 @@
 import "../css/screen.css";
 import { motion } from "framer-motion";
-
+import { useState, useEffect } from "react";
 import { History } from "../components/history";
 import { CalculatorMode } from "../components/calculatorMode";
 import { BlinkingCurson } from "../components/blinkingcursor";
 
-export function Screen({ expression, result, ans, changeMode, mode,history,updateScreenFromHistory }) {
+export function Screen({ expression, result, ans, changeMode, mode,history,updateScreenFromHistory, open }) {
 
   let displayUp = result === 0 ? 'ans= ' + ans : result;
-  let displayDown = expression;
+  const [displayDown, setdisplayDown] = useState(expression);
 
   const animations = {
     initialUp: {
@@ -32,6 +32,21 @@ export function Screen({ expression, result, ans, changeMode, mode,history,updat
       fontSize: '1.5vw', 
     },
   };
+ 
+useEffect(() => {
+  if (open > 0 ) {
+    const index = expression.length - open;
+    setdisplayDown(
+      <>
+        {expression.slice(0, index)}
+        <span style={{ color: "#ff6666" }}>{expression.slice(index)}</span>
+      </>
+    );
+  } else {
+    setdisplayDown(expression);
+  }
+}, [expression, open]);
+
 
   return (
     <div className="calculator-screen">

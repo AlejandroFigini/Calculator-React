@@ -52,34 +52,42 @@ export function App() {
     squareRoot: {
       operator: '√()',
       icon: '√',
+      action: IncreaseParentheses,
     },
     logarithm10: {
       operator: 'log()',
       icon: 'log',
+      action: IncreaseParentheses,
     },
     logarithmE: {
       operator: 'In()',
       icon: 'In',
+      action: IncreaseParentheses,
     },
     cos: {
       operator: 'cos()',
       icon: 'cos',
+      action: IncreaseParentheses,
     },
     sen: {
       operator: 'sen()',
       icon: 'sen',
+      action: IncreaseParentheses,
     },
     tan: {
       operator: 'tan()',
       icon: 'tan',
+      action: IncreaseParentheses,
     },
     factorial: {
       operator: '!',
       icon: 'x!',
+      action: IncreaseParentheses,
     },
     exponent: {
       operator: '^()',
       icon: '^',
+      action: IncreaseParentheses,
     },
     //buttons with additional functions
     parenthesesOpen: {
@@ -121,6 +129,7 @@ export function App() {
   }
 
   function updateScreen(value) {
+    console.log(value);
     setExpression((prev) => {
       switch (true) {
         case value === "=": //always show = in the end of the expression
@@ -134,20 +143,12 @@ export function App() {
 
         case value === ')': //Only update the parentheses counter
           return prev;
-        
-        case value.includes("()"): 
-  setOpen(prev => prev + 1);  
-
-  const closing = prev.match(/(\)+)$/); // paréntesis al final
-  const index = closing ? prev.length - closing[0].length : prev.length;
-
-  return prev.slice(0, index) + value + prev.slice(index);
-
-      
+             
         case open > 0: //Determine the position of the input based on the parentheses
           return prev.slice(0, -open) + value + prev.slice(-open);
 
         default:
+          console.log(open);
           return prev + value;
       }
     });
@@ -163,7 +164,8 @@ export function App() {
 
       // Case 2: delete character keeping parentheses 
       const match = prev.match(/(\)+)$/);
-      if (match) {
+      if (match) {       
+        setOpen( match[0].length );
         const count = match[0].length;
         return prev.slice(0, -count - 1) + prev.slice(-count);
       }
@@ -214,7 +216,7 @@ export function App() {
   return (
     <>
       <section>
-        <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} />
+        <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} open={open}/>
         <div className="buttons-container">
           <CalculatorBasic buttons={buttons} updateScreen={updateScreen} />
           <CalculatorScientific buttons={buttons} updateScreen={updateScreen} mode={mode} />
