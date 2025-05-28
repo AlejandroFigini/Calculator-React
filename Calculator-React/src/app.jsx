@@ -5,7 +5,6 @@ import "./css/app.css";
 //Components
 import { Screen } from "./components/screen";
 import { CalculatorBasic } from "./components/calculatorBasic";
-import { CalculatorScientific } from "./components/calculatorScientific";
 
 export function App() {
 
@@ -15,103 +14,44 @@ export function App() {
   const [open, setOpen] = useState(0); //counter open parentheses
   const [mode, setMode] = useState('Standar');
   const [history, setHistory] = useState([]);
-  const buttons = {
-    //Buttons without icons
-    e: {
-      operator: 'e',
-    },
-    ans: {
-      operator: 'Ans',
-    },
-    percentage: {
-      operator: '%',
-    },
-    degrees: {
-      operator: 'Deg',
-    },
-    radians: {
-      operator: 'Rad',
-    },
-    addition: {
-      operator: '+',
-    },
-    subtraction: {
-      operator: '-',
-    },
-    divide: {
-      operator: '÷',
-    },
-    multiplication: {
-      operator: 'x',
-    },
-    pi: {
-      operator: 'π',
-    },
-
-    //Buttons with icons
-    squareRoot: {
-      operator: '√()',
-      icon: '√',
-      action: IncreaseParentheses,
-    },
-    logarithm10: {
-      operator: 'log()',
-      icon: 'log',
-      action: IncreaseParentheses,
-    },
-    logarithmE: {
-      operator: 'In()',
-      icon: 'In',
-      action: IncreaseParentheses,
-    },
-    cos: {
-      operator: 'cos()',
-      icon: 'cos',
-      action: IncreaseParentheses,
-    },
-    sen: {
-      operator: 'sen()',
-      icon: 'sen',
-      action: IncreaseParentheses,
-    },
-    tan: {
-      operator: 'tan()',
-      icon: 'tan',
-      action: IncreaseParentheses,
-    },
-    factorial: {
-      operator: '!',
-      icon: 'x!',
-      action: IncreaseParentheses,
-    },
-    exponent: {
-      operator: '^()',
-      icon: '^',
-      action: IncreaseParentheses,
-    },
-    //buttons with additional functions
-    parenthesesOpen: {
-      operator: '()',
-      icon: '(',
-      action: IncreaseParentheses,
-    },
-    parenthesesClose: {
-      operator: ')',
-      action: DecreaseParentheses,
-    },
-    clear: {
-      operator: 'C',
-      action: clearScreen,
-    },
-    delete: {
-      operator: '←',
-      action: deleteCharScreen,
-    },
-    equal: {
-      operator: '=',
-      action: calculateResult,
-    }
-  }
+const buttons = {
+  basic: [
+    { icon: '1' },
+    { icon: '2' },
+    { icon: '3' },
+    { icon: '4' },
+    { icon: '5' },
+    { icon: '6' },
+    { icon: '7' },
+    { icon: '8' },
+    { icon: '9' },
+    { icon: '0' },
+    { icon: '.' },
+    { icon: '%' },
+    { icon: '+' },
+    { icon: '-' },
+    { icon: '÷' },
+    { icon: 'x' },
+    { icon: 'C', action: clearScreen },
+    { icon: '←', action: deleteCharScreen },
+    { icon: '=', action: calculateResult }
+  ],
+  scientific: [
+    { icon: 'e' },
+    { icon: 'Ans' },
+    { icon: 'π' },
+    { icon: '√', operator: '√()', action: IncreaseParentheses },
+    { icon: 'log', operator: 'log()', action: IncreaseParentheses },
+    { icon: 'In', operator: 'In()', action: IncreaseParentheses },
+    { icon: 'cos', operator: 'cos()', action: IncreaseParentheses },
+    { icon: 'sen', operator: 'sen()', action: IncreaseParentheses },
+    { icon: 'tan', operator: 'tan()', action: IncreaseParentheses },
+    { icon: 'x!', operator: '!' },
+    { icon: '^', operator: '^()', action: IncreaseParentheses },
+    { icon: '(', operator: '()', action: IncreaseParentheses },
+    { icon: ')', action: DecreaseParentheses }
+  ]
+};
 
   //Button functions
   function clearScreen() {
@@ -120,7 +60,8 @@ export function App() {
     setOpen(0);
   }
 
-  function IncreaseParentheses() {
+  function IncreaseParentheses(value) {
+    updateScreen(value);
     setOpen(prev => prev + 1);
   }
 
@@ -218,8 +159,7 @@ export function App() {
       <section>
         <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} open={open}/>
         <div className="buttons-container">
-          <CalculatorBasic buttons={buttons} updateScreen={updateScreen} />
-          <CalculatorScientific buttons={buttons} updateScreen={updateScreen} mode={mode} />
+          <CalculatorBasic basicButtons={buttons.basic} scientificButtons={buttons.scientific} updateScreen={updateScreen} mode={mode}/>
         </div>
       </section>
     </>
