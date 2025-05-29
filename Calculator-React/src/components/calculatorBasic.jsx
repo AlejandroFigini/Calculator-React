@@ -1,6 +1,6 @@
 import { Button } from "./button";
 
-export function CalculatorBasic({ basicButtons, scientificButtons, updateScreen, mode }) {
+export function CalculatorBasic({ basicButtons, scientificButtons, mode }) {
   return (
     <>
       <div className="buttons-Basic">
@@ -9,7 +9,7 @@ export function CalculatorBasic({ basicButtons, scientificButtons, updateScreen,
             key={btn.icon}
             icon={btn.icon}
             operator={btn.operator}
-             action={btn.action || updateScreen}
+             action={btn.action }
           />
         ))}
       </div>
@@ -19,7 +19,7 @@ export function CalculatorBasic({ basicButtons, scientificButtons, updateScreen,
           <Button key={btn.icon}
             icon={btn.icon}
             operator={btn.operator}
-             action={btn.action || updateScreen}
+             action={btn.action}
           />
         ))}
       </div>

@@ -16,42 +16,43 @@ export function App() {
   const [history, setHistory] = useState([]);
 const buttons = {
   basic: [
-    { icon: '1' },
-    { icon: '2' },
-    { icon: '3' },
-    { icon: '4' },
-    { icon: '5' },
-    { icon: '6' },
-    { icon: '7' },
-    { icon: '8' },
-    { icon: '9' },
-    { icon: '0' },
-    { icon: '.' },
-    { icon: '%' },
-    { icon: '+' },
-    { icon: '-' },
-    { icon: '÷' },
-    { icon: 'x' },
+    { icon: '1', action: updateScreen },
+    { icon: '2', action: updateScreen },
+    { icon: '3', action: updateScreen },
+    { icon: '4', action: updateScreen },
+    { icon: '5', action: updateScreen },
+    { icon: '6', action: updateScreen },
+    { icon: '7', action: updateScreen },
+    { icon: '8', action: updateScreen },
+    { icon: '9', action: updateScreen },
+    { icon: '0', action: updateScreen },
+    { icon: '.', action: updateScreen },
+    { icon: '%', action: updateScreen },
+    { icon: '+', action: updateScreen },
+    { icon: '-', action: updateScreen },
+    { icon: '÷', action: updateScreen },
+    { icon: 'x', action: updateScreen },
     { icon: 'C', action: clearScreen },
     { icon: '←', action: deleteCharScreen },
     { icon: '=', action: calculateResult }
   ],
   scientific: [
-    { icon: 'e' },
-    { icon: 'Ans' },
-    { icon: 'π' },
+    { icon: 'e', action: updateScreen },
+    { icon: 'Ans', action: updateScreen },
+    { icon: 'π', action: updateScreen },
     { icon: '√', operator: '√()', action: IncreaseParentheses },
     { icon: 'log', operator: 'log()', action: IncreaseParentheses },
     { icon: 'In', operator: 'In()', action: IncreaseParentheses },
     { icon: 'cos', operator: 'cos()', action: IncreaseParentheses },
     { icon: 'sen', operator: 'sen()', action: IncreaseParentheses },
     { icon: 'tan', operator: 'tan()', action: IncreaseParentheses },
-    { icon: 'x!', operator: '!' },
+    { icon: 'x!', operator: '!', action: updateScreen },
     { icon: '^', operator: '^()', action: IncreaseParentheses },
     { icon: '(', operator: '()', action: IncreaseParentheses },
     { icon: ')', action: DecreaseParentheses }
   ]
 };
+
 
   //Button functions
   function clearScreen() {
@@ -159,7 +160,7 @@ const buttons = {
       <section>
         <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} open={open}/>
         <div className="buttons-container">
-          <CalculatorBasic basicButtons={buttons.basic} scientificButtons={buttons.scientific} updateScreen={updateScreen} mode={mode}/>
+          <CalculatorBasic basicButtons={buttons.basic} scientificButtons={buttons.scientific} mode={mode}/>
         </div>
       </section>
     </>
