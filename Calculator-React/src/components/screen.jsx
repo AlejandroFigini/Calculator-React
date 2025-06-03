@@ -39,11 +39,18 @@ useEffect(() => {
     setdisplayDown(
       <>
         {expression.slice(0, index)}
+         <BlinkingCurson result={result} />
         <span style={{ color: "#ff6666" }}>{expression.slice(index)}</span>
       </>
     );
   } else {
-    setdisplayDown(expression);
+    setdisplayDown(
+      <>
+      {expression}
+               <BlinkingCurson result={result} />
+
+      </>
+    );
   }
 }, [expression, open]);
 
@@ -68,7 +75,6 @@ useEffect(() => {
           transition={{ duration: 0.3, ease: "easeOut" }} 
         >
           {displayDown}
-          <BlinkingCurson result={result} />
         </motion.span>
       </h2>
     </div>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { evaluate } from "mathjs";
-import "./css/app.css";
 
 //Components
 import { Screen } from "./components/screen";
@@ -14,44 +13,47 @@ export function App() {
   const [open, setOpen] = useState(0); //counter open parentheses
   const [mode, setMode] = useState('Standar');
   const [history, setHistory] = useState([]);
-const buttons = {
-  basic: [
-    { icon: '1', action: updateScreen },
-    { icon: '2', action: updateScreen },
-    { icon: '3', action: updateScreen },
-    { icon: '4', action: updateScreen },
-    { icon: '5', action: updateScreen },
-    { icon: '6', action: updateScreen },
-    { icon: '7', action: updateScreen },
-    { icon: '8', action: updateScreen },
-    { icon: '9', action: updateScreen },
-    { icon: '0', action: updateScreen },
-    { icon: '.', action: updateScreen },
-    { icon: '%', action: updateScreen },
-    { icon: '+', action: updateScreen },
-    { icon: '-', action: updateScreen },
-    { icon: '÷', action: updateScreen },
-    { icon: 'x', action: updateScreen },
-    { icon: 'C', action: clearScreen },
-    { icon: '←', action: deleteCharScreen },
-    { icon: '=', action: calculateResult }
-  ],
-  scientific: [
-    { icon: 'e', action: updateScreen },
-    { icon: 'Ans', action: updateScreen },
-    { icon: 'π', action: updateScreen },
-    { icon: '√', operator: '√()', action: IncreaseParentheses },
-    { icon: 'log', operator: 'log()', action: IncreaseParentheses },
-    { icon: 'In', operator: 'In()', action: IncreaseParentheses },
-    { icon: 'cos', operator: 'cos()', action: IncreaseParentheses },
-    { icon: 'sen', operator: 'sen()', action: IncreaseParentheses },
-    { icon: 'tan', operator: 'tan()', action: IncreaseParentheses },
-    { icon: 'x!', operator: '!', action: updateScreen },
-    { icon: '^', operator: '^()', action: IncreaseParentheses },
-    { icon: '(', operator: '()', action: IncreaseParentheses },
-    { icon: ')', action: DecreaseParentheses }
-  ]
-};
+  const buttons = {
+    basic: [
+      { icon: 'C', action: clearScreen },
+      { icon: '←', action: deleteCharScreen },
+      { icon: '%', action: updateScreen },
+      { icon: '+', action: updateScreen },
+      { icon: '1', action: updateScreen },
+      { icon: '2', action: updateScreen },
+      { icon: '3', action: updateScreen },
+      { icon: '÷', action: updateScreen },
+      { icon: '4', action: updateScreen },
+      { icon: '5', action: updateScreen },
+      { icon: '6', action: updateScreen },
+      { icon: '-', action: updateScreen },
+      { icon: '7', action: updateScreen },
+      { icon: '8', action: updateScreen },
+      { icon: '9', action: updateScreen },
+      { icon: 'x', action: updateScreen },
+      { icon: '0', action: updateScreen },
+      { icon: '.', action: updateScreen },
+      { icon: '=', action: calculateResult }
+    ],
+    scientific: [
+      { icon: 'e', action: updateScreen },
+      { icon: 'Ans', action: updateScreen },
+      { icon: '|x|', operator: '||', action: IncreaseParentheses },
+      { icon: 'Rnd', operator: 'round()', action: IncreaseParentheses },
+
+      { icon: 'π', action: updateScreen },
+      { icon: '√', operator: '√()', action: IncreaseParentheses },
+      { icon: 'log', operator: 'log()', action: IncreaseParentheses },
+      { icon: 'In', operator: 'In()', action: IncreaseParentheses },
+      { icon: 'cos', operator: 'cos()', action: IncreaseParentheses },
+      { icon: 'sen', operator: 'sen()', action: IncreaseParentheses },
+      { icon: 'tan', operator: 'tan()', action: IncreaseParentheses },
+      { icon: 'x!', operator: '!', action: updateScreen },
+      { icon: '^', operator: '^()', action: IncreaseParentheses },
+      { icon: '(', operator: '()', action: IncreaseParentheses },
+      { icon: ')', action: DecreaseParentheses }
+    ]
+  };
 
 
   //Button functions
@@ -76,7 +78,7 @@ const buttons = {
       switch (true) {
         case value === "=": //always show = in the end of the expression
           setOpen(0);
-          return prev + value;  
+          return prev + value;
 
         case result !== 0: //Start a new operation keeping the last result
           setResult(0);
@@ -85,7 +87,7 @@ const buttons = {
 
         case value === ')': //Only update the parentheses counter
           return prev;
-             
+
         case open > 0: //Determine the position of the input based on the parentheses
           return prev.slice(0, -open) + value + prev.slice(-open);
 
@@ -106,8 +108,8 @@ const buttons = {
 
       // Case 2: delete character keeping parentheses 
       const match = prev.match(/(\)+)$/);
-      if (match) {       
-        setOpen( match[0].length );
+      if (match) {
+        setOpen(match[0].length);
         const count = match[0].length;
         return prev.slice(0, -count - 1) + prev.slice(-count);
       }
@@ -157,12 +159,13 @@ const buttons = {
 
   return (
     <>
-      <section>
-        <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} open={open}/>
-        <div className="buttons-container">
-          <CalculatorBasic basicButtons={buttons.basic} scientificButtons={buttons.scientific} mode={mode}/>
-        </div>
-      </section>
+
+      <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} open={open} />
+      <div className="flex justify-center">
+
+        <CalculatorBasic basicButtons={buttons.basic} scientificButtons={buttons.scientific} mode={mode} />
+      </div>
+
     </>
   )
 }

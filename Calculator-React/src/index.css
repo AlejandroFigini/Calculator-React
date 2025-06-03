@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* Estilos globales */
+body {
+  
+      height: 100vh;
+background: linear-gradient(to right, #A5CC82, #00467F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    }
+
+    section {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 0.6vw;
+      padding: 1.1vw;
+      box-shadow: -5px 3px 13px -6px rgba(0, 0, 0, 0.58);
+      background: rgba(255, 255, 255, 0.138); 
+      display: flex;
+      flex-direction: column;
+      gap: .6vw;
+    }
+
+
+    /*button*/
+
+.btn-\+,
+.btn--,
+.btn-x,
+.btn-\=,
+.btn-÷,
+.btn-C,
+.btn-←,
+.btn-\% {
+    background-color:rgba(0, 0, 0, 0.795);
+}
+.btn-\= {
+    grid-column: 3 / 5;
+    grid-row: 5 / 6;
+}
+
+
+
