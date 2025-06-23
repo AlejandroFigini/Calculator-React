@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
-import { evaluate } from "mathjs";
+import { useState, useEffect } from 'react';
+import { evaluate } from 'mathjs';
 
-//Components
-import { Screen } from "./components/screen";
-import { CalculatorBasic } from "./components/calculatorBasic";
+// Components
+import { Screen } from './components/screen';
+import { CalculatorButtons } from './components/CalculatorButtons';
 
 export function App() {
-
   const [expression, setExpression] = useState('');
   const [result, setResult] = useState(0);
   const [ans, setAns] = useState(0);
-  const [open, setOpen] = useState(0); //counter open parentheses
+  const [open, setOpen] = useState(0); // count open parentheses
   const [mode, setMode] = useState('Standar');
   const [history, setHistory] = useState([]);
   const buttons = {
@@ -38,25 +37,23 @@ export function App() {
     scientific: [
       { icon: 'e', action: updateScreen },
       { icon: 'Ans', action: updateScreen },
-      { icon: '|x|', operator: '||', action: IncreaseParentheses },
-      { icon: 'Rnd', operator: 'round()', action: IncreaseParentheses },
-
       { icon: 'π', action: updateScreen },
+      { icon: '(', operator: '()', action: IncreaseParentheses },
+      { icon: ')', action: DecreaseParentheses },
+      { icon: '|x|', operator: 'abs()', action: IncreaseParentheses },
+      { icon: 'Rnd', operator: 'round()', action: IncreaseParentheses },
       { icon: '√', operator: '√()', action: IncreaseParentheses },
       { icon: 'log', operator: 'log()', action: IncreaseParentheses },
       { icon: 'In', operator: 'In()', action: IncreaseParentheses },
       { icon: 'cos', operator: 'cos()', action: IncreaseParentheses },
-      { icon: 'sen', operator: 'sen()', action: IncreaseParentheses },
+      { icon: 'sen', operator: 'sin()', action: IncreaseParentheses },
       { icon: 'tan', operator: 'tan()', action: IncreaseParentheses },
       { icon: 'x!', operator: '!', action: updateScreen },
-      { icon: '^', operator: '^()', action: IncreaseParentheses },
-      { icon: '(', operator: '()', action: IncreaseParentheses },
-      { icon: ')', action: DecreaseParentheses }
+      { icon: '^', operator: '^()', action: IncreaseParentheses }
     ]
   };
 
-
-  //Button functions
+  // Button functions
   function clearScreen() {
     setExpression('');
     setResult(0);
@@ -65,77 +62,98 @@ export function App() {
 
   function IncreaseParentheses(value) {
     updateScreen(value);
-    setOpen(prev => prev + 1);
+    setOpen((prev) => prev + 1);
   }
 
   function DecreaseParentheses() {
-    setOpen(prev => Math.max(0, prev - 1));
+    setOpen((prev) => Math.max(0, prev - 1));
   }
 
   function updateScreen(value) {
-    console.log(value);
     setExpression((prev) => {
-      switch (true) {
-        case value === "=": //always show = in the end of the expression
-          setOpen(0);
-          return prev + value;
+      let formattedValue = value;
 
-        case result !== 0: //Start a new operation keeping the last result
+      if (/^[^0-9.]$/.test(value)) {
+        formattedValue = ` ${value} `; // add space if the input is a symbol
+      }
+
+      switch (true) {
+        case value === '=': // always show = in the end of the expression
+          setOpen(0);
+          return prev + formattedValue;
+
+        case result !== 0: // Start a new operation keeping the last result
           setResult(0);
           setOpen(0);
-          return ans + value;
+          return ans + formattedValue;
 
-        case value === ')': //Only update the parentheses counter
+        case value === ')': // Only update the parentheses counter
           return prev;
 
-        case open > 0: //Determine the position of the input based on the parentheses
-          return prev.slice(0, -open) + value + prev.slice(-open);
+        case open > 0: // Determine the position of the input based on open parentheses
+          return prev.slice(0, -open) + formattedValue + prev.slice(-open);
 
         default:
-          console.log(open);
-          return prev + value;
+          return prev + formattedValue;
       }
     });
   }
 
   function deleteCharScreen() {
     setExpression((prev) => {
-      // Case 1: delete empty parentheses  
-      if (prev.includes("()")) {
+      let newExp = prev;
+
+      const emptyFuncOrParensRegex = /(log|ln|cos|sen|tan|√|Rnd|abs)?\(\)/g;
+
+      // delete empty parentheses or functions
+      if (emptyFuncOrParensRegex.test(newExp)) {
         setOpen((prevOpen) => prevOpen - 1);
-        return prev.replace(/\(\)/g, "");
+        newExp = newExp.replace(emptyFuncOrParensRegex, '');
       }
 
-      // Case 2: delete character keeping parentheses 
-      const match = prev.match(/(\)+)$/);
-      if (match) {
-        setOpen(match[0].length);
-        const count = match[0].length;
-        return prev.slice(0, -count - 1) + prev.slice(-count);
+      const match = newExp.match(/(\)+)$/);
+      const count = match ? match[0].length : 0;
+      setOpen(count);
+
+      // inside parentheses
+      if (count > 0) {
+        if (newExp.slice(0, -count).endsWith(' ')) {
+          newExp = newExp.slice(0, -count - 3) + newExp.slice(-count);
+        } else {
+          newExp = newExp.slice(0, -count - 1) + newExp.slice(-count);
+        }
       }
 
-      // Case 3: normal delete
-      return prev.slice(0, -1);
+      // outside parentheses
+      if (count === 0) {
+        if (newExp.endsWith(' ')) {
+          newExp = newExp.slice(0, -3);
+        } else {
+          newExp = newExp.slice(0, -1);
+        }
+      }
+
+      return newExp;
     });
   }
 
   function parseExpression(value) {
-    return value.replaceAll("x", "*")
-      .replaceAll("÷", "/")
-      .replaceAll("√", "sqrt")
-      .replaceAll("π", "pi")
-      .replaceAll("Ans", ans)
-      .replaceAll("In", 'log')
-      .replaceAll("log", 'log10');
+    return value
+      .replaceAll('x', '*')
+      .replaceAll('÷', '/')
+      .replaceAll('√', 'sqrt')
+      .replaceAll('π', 'pi')
+      .replaceAll('Ans', ans)
+      .replaceAll('In', 'log')
+      .replaceAll('log', 'log10');
   }
 
   function calculateResult() {
     try {
       const result = evaluate(parseExpression(expression));
-
       setResult(result);
-      setHistory(prev => [...prev, expression]); // add expression to history
-      updateScreen("=");
+      setHistory((prev) => [...prev, expression]);
+      updateScreen('=');
     } catch {
       setResult('Syntax Error');
     }
@@ -159,13 +177,23 @@ export function App() {
 
   return (
     <>
-
-      <Screen updateScreenFromHistory={updateScreenFromHistory} history={history} expression={expression} result={result} ans={ans} changeMode={changeMode} mode={mode} open={open} />
+      <Screen
+        updateScreenFromHistory={updateScreenFromHistory}
+        history={history}
+        expression={expression}
+        result={result}
+        ans={ans}
+        changeMode={changeMode}
+        mode={mode}
+        open={open}
+      />
       <div className="flex justify-center">
-
-        <CalculatorBasic basicButtons={buttons.basic} scientificButtons={buttons.scientific} mode={mode} />
+        <CalculatorButtons
+          basicButtons={buttons.basic}
+          scientificButtons={buttons.scientific}
+          mode={mode}
+        />
       </div>
-
     </>
-  )
+  );
 }

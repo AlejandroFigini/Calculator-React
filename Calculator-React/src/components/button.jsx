@@ -1,9 +1,7 @@
-
-export function Button({icon,operator,action }) {
-    return (
-      <button className=
-      {  
-        `
+export function Button({ icon, operator, action }) {
+  return (
+    <button
+      className={`
         bg-[rgba(72,95,97,0.099)] 
         text-[rgba(255,255,255,0.634)] 
         transition-all duration-200 ease-in-out 
@@ -12,15 +10,15 @@ export function Button({icon,operator,action }) {
         border-[0.06vw] border-[rgba(255,255,255,0.51)] 
         rounded-[0.25vw] 
         text-[0.8vw] 
-        p-[0.85vw] 
+        p-[0.75vw] 
         cursor-pointer
         hover:bg-[rgb(23,67,82)] 
-        hover:text-[rgb(255,255,255)]
-      
-        
-        
-       btn-${icon }`} onClick={() => action(operator ? operator : icon)}> 
-        {icon}
-      </button>
-    )
+        hover:text-[rgb(255,255,255)]        
+        btn-${icon}
+      `}
+      onClick={() => action(operator || icon)}
+    >
+      {icon}
+    </button>
+  );
 }

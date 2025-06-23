@@ -1,32 +1,67 @@
-import "../css/history.css"
+import { useState } from 'react';
+import { faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+export function History({ history, updateScreenFromHistory }) {
+  const [Open, setOpen] = useState(false);
 
-import { useState } from "react";
-import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-export function History({history,updateScreenFromHistory}) {
-
-    const [Open, setOpen] = useState(false);
-
-
-
-    return (
-        <>
-        <div className={'historical-container'}>
-            <FontAwesomeIcon  onClick={() => setOpen(!Open)} className={'historical-icon'} icon={faClockRotateLeft} style={{ color: "white" }}/>
-            <div className={`elements ${Open ? 'open' : ''}`}>
-          
-                {history.map((entry, index) => (
-                    <h3 key={index} onClick={ 
-                    function(){
-                        updateScreenFromHistory(entry);
-                      }
-                       
-                    }>{entry}</h3>
-                ))}           
-            </div>
-        </div>      
-        </>        
-    );
+  return (
+    <>
+      <div className="flex justify-end items-center relative">
+        <FontAwesomeIcon
+          icon={faClockRotateLeft}
+          onClick={() => setOpen(!Open)}
+          className={`
+            transition-all 
+            duration-200 
+            ease-in-out 
+            hover:scale-[1.02] 
+            hover:text-[rgb(31,186,186)] 
+            hover:cursor-pointer
+            ${Open ? 'text-[rgb(31,186,186)]' : 'text-white'}
+          `}
+        />
+        <div
+          className={`
+            absolute 
+            bg-[#3a3a3a]       
+            top-[-0.7vw] 
+            [scrollbar-width:none] 
+            h-[7.9vw] 
+            w-[7vw] 
+            overflow-y-scroll 
+            overflow-x-hidden 
+            rounded-r-[0.5vw] 
+            transition-all 
+            duration-300 
+            ease-in-out 
+            ${Open ? 'translate-x-[7.2vw] opacity-100' : 'opacity-0 translate-x-full'}
+          `}
+        >
+          {history.map((entry, index) => (
+            <h3
+              className="
+                text-[rgba(255,231,231,0.596)] 
+                transition-all 
+                duration-100 
+                ease-in-out 
+                px-[0.5vw] 
+                py-[0.2vw]
+                hover:bg-[rgb(52,144,144)] 
+                hover:cursor-pointer 
+                hover:scale-[1.05] 
+                hover:text-white
+              "
+              key={index}
+              onClick={function () {
+                updateScreenFromHistory(entry);
+              }}
+            >
+              {entry}
+            </h3>
+          ))}
+        </div>
+      </div>
+    </>
+  );
 }
