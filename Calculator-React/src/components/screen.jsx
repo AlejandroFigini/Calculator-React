@@ -19,7 +19,7 @@ export function Screen({ expression, result, ans, changeMode, mode, history, upd
         <>
           {expression.slice(0, index)}
           <BlinkingCurson result={result} />
-          <span style={{ color: '#00ff0c' }}>{expression.slice(index)}</span>
+          <span style={{ color: '#696464' }}>{expression.slice(index)}</span>
         </>
       );
     } else {
@@ -66,7 +66,7 @@ export function Screen({ expression, result, ans, changeMode, mode, history, upd
             className="absolute"
             animate={{
               y: animateCondition ? 30 : 0,
-              color: animateCondition ? '#ffffff' : '#bfc3c6',
+              color: animateCondition ? '#ffffff' : '#aca3a3',
               fontSize: animateCondition ? '1vw' : '.6vw',
             }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -77,7 +77,7 @@ export function Screen({ expression, result, ans, changeMode, mode, history, upd
             className="absolute"
             animate={{
               y: animateCondition ? 0 : 30,
-              color: animateCondition ? '#bfc3c6' : '#ffffff',
+              color: animateCondition ? '#aca3a3' : '#ffffff',
               fontSize: animateCondition ? '.6vw' : '1vw',
             }}
             transition={{ duration: 0.3, ease: 'easeOut' }}

@@ -12,7 +12,7 @@ export function Button({ icon, operator, action }) {
         text-[0.8vw] 
         p-[0.75vw] 
         cursor-pointer
-        hover:bg-[rgb(23,67,82)] 
+        hover:bg-[#186064] 
         hover:text-[rgb(255,255,255)]        
         btn-${icon}
       `}

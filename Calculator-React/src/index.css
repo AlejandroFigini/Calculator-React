@@ -3,7 +3,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   height: 100vh;
-  background: linear-gradient(to right, #3A6073, #16222A);
+  background: linear-gradient(to right, #f1f2b5, #135058); 
   overflow: hidden;
 }
 
@@ -15,7 +15,7 @@ section {
   border-radius: 0.6vw;
   padding: 1.1vw;
   box-shadow: -5px 3px 13px -6px rgba(0, 0, 0, 0.58);
-  background: rgba(255, 255, 255, 0.138);
+  background: rgba(47, 78, 60, 0.735);
   display: flex;
   flex-direction: column;
   gap: .6vw;
@@ -43,6 +43,10 @@ li span {
 
 span:hover {
   transform: scale(1.02);
-  color: rgb(31, 186, 186);
+  color:#186064;
 }
 
+/*Bubbles*/
+.bubbleShadow {
+box-shadow: -29px -4px 60px -31px rgba(0,0,0,0.15);
+}

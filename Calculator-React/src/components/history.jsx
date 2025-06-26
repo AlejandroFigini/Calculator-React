@@ -16,15 +16,15 @@ export function History({ history, updateScreenFromHistory }) {
             duration-200 
             ease-in-out 
             hover:scale-[1.02] 
-            hover:text-[rgb(31,186,186)] 
+            hover:text-[#186064] 
             hover:cursor-pointer
-            ${Open ? 'text-[rgb(31,186,186)]' : 'text-white'}
+            ${Open ? 'text-[#186064]' : 'text-white'}
           `}
         />
         <div
           className={`
             absolute 
-            bg-[#3a3a3a]       
+            bg-[#0b0c0c]       
             top-[-0.7vw] 
             [scrollbar-width:none] 
             h-[7.9vw] 
@@ -47,7 +47,7 @@ export function History({ history, updateScreenFromHistory }) {
                 ease-in-out 
                 px-[0.5vw] 
                 py-[0.2vw]
-                hover:bg-[rgb(52,144,144)] 
+                hover:bg-[#186064] 
                 hover:cursor-pointer 
                 hover:scale-[1.05] 
                 hover:text-white
